@@ -15,5 +15,7 @@ jobs:
             [
               { "base": "preprod", "labels": ["PREPROD"] },
               { "base": "rc", "labels": ["PRODUCTION"] },
-              { "base": "master", "labels": ["RELEASE"] }
+              { "base": "master", "labels": ["RELEASE"] },
+              { "on": "approve", "labels": ["VALIDATED"] },
+              { "on": "request-changes", "labels": ["CHANGES REQUESTED"] }
             ]
