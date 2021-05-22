@@ -22,15 +22,7 @@ async function run() {
 
 async function getRepoLabels(octokit, github) {
     console.log(github.context.repo);
-    return await octokit.paginate(octokit.listLabelsForRepo, {
-        ...github.context.repo
-    }).map(label => {
-        return {
-            name: label.name,
-            color: label.color,
-            description: label.description || ''
-        };
-    });
+    return octokit.listLabelsForRepo(github.context.repo);
 }
 
 run();
