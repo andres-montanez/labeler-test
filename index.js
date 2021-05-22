@@ -9,8 +9,8 @@ async function run() {
         console.log(existingLabels);
 
         // Labels to be set on the repository
-        const desiredLabels = JSON.parse(core.getInput('labels'));
-        desiredLabels.forEach(label => {
+        const configuredLabels = JSON.parse(core.getInput('labels'));
+        configuredLabels.forEach(label => {
             if (existingLabels[label.name]) {
                 if (
                     existingLabels[label.name].color !== label.color ||
@@ -18,13 +18,19 @@ async function run() {
                 ) {
                     console.log(`Updating label ${label.name}`);
                     let response = updateLabel(octokit, github, label);
+                    delete existingLabels[label.name];
                 }
             } else {
                 console.log(`Creating label ${label.name}`);
                 let response = createLabel(octokit, github, label);
             }
         });
-        console.log(desiredLabels);
+
+        // Remove not defined labels
+        existingLabels.forEach(label => {
+            console.log(`Deleting label ${label.name}`);
+            let response = deleteLabel(octokit, github, label);
+        });
 
         // Get the JSON webhook payload for the event that triggered the workflow
         //const payload = JSON.stringify(github.context.payload, undefined, 2)
@@ -54,7 +60,7 @@ async function updateLabel(octokit, github, label) {
         repo: github.context.repo.repo,
         name: label.name,
         color: label.color,
-        description: label.description || '',
+        description: label.description || ''
     };
 
     return await octokit.rest.issues.updateLabel(payload);
@@ -66,10 +72,20 @@ async function createLabel(octokit, github, label) {
         repo: github.context.repo.repo,
         name: label.name,
         color: label.color,
-        description: label.description || '',
+        description: label.description || ''
     };
 
     return await octokit.rest.issues.createLabel(payload);
+}
+
+async function deleteLabel(octokit, github, label) {
+    let payload = {
+        owner: github.context.repo.owner,
+        repo: github.context.repo.repo,
+        name: label.name
+    };
+
+    return await octokit.rest.issues.deleteLabel(payload);
 }
 
 run();

@@ -13,7 +13,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           labels: |
             [
-              { "name": "bugfix", "color": "cc0000", "description": "A bug is fixed" },
-              { "name": "feature", "color": "00cc00", "description": "A feature" },
-              { "name": "doc", "color": "0000cc", "description": "A documentation improvement" }
+              { "name": "bugfix", "color": "d73a4a", "description": "For fixing a bug" },
+              { "name": "feature", "color": "0E8A16", "description": "A feature addition" },
+              { "name": "documentation", "color": "0075ca", "description": "Improve documentation" }
             ]
