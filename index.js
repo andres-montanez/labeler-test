@@ -9,7 +9,6 @@ async function run() {
         });
 
         const octokit = github.getOctokit(core.getInput('github-token'));
-        console.log(octokit, core.getInput('github-token'));
         const existingLabels = getRepoLabels(octokit, github);
         console.log(existingLabels);
 
@@ -23,8 +22,9 @@ async function run() {
 
 async function getRepoLabels(octokit, github) {
     console.log(github.context.repo);
-
-    return await octokit.paginate(octokit.issues.listLabelsForRepo, {
+    console.log(octokit);
+    return await octokit.issues.listLabelsForRepo(github.context.repo);
+    /*return await octokit.paginate(octokit.issues.listLabelsForRepo, {
         ...github.context.repo
     }).map(label => {
         return {
@@ -32,7 +32,7 @@ async function getRepoLabels(octokit, github) {
             color: label.color,
             description: label.description || ''
         };
-    });
+    });*/
 }
 
 run();
