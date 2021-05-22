@@ -22,9 +22,7 @@ async function run() {
 
 async function getRepoLabels(octokit, github) {
     console.log(github.context.repo);
-    console.log(octokit);
-    return await octokit.issues.listLabelsForRepo(github.context.repo);
-    /*return await octokit.paginate(octokit.issues.listLabelsForRepo, {
+    return await octokit.paginate(octokit.listLabelsForRepo, {
         ...github.context.repo
     }).map(label => {
         return {
@@ -32,7 +30,7 @@ async function getRepoLabels(octokit, github) {
             color: label.color,
             description: label.description || ''
         };
-    });*/
+    });
 }
 
 run();
