@@ -17,8 +17,8 @@ async function run() {
                     existingLabels[label.name].description !== label.description
                 ) {
                     console.log(`Updating label ${label.name}`);
-                    let response = updateLabel(octokit, github, label);
                     delete existingLabels[label.name];
+                    let response = updateLabel(octokit, github, label);
                 }
             } else {
                 console.log(`Creating label ${label.name}`);
