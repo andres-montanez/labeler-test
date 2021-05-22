@@ -1,26 +1,28 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 
-try {
-    // `who-to-greet` input defined in action metadata file
-    const labels = JSON.parse(core.getInput('labels'));
-    console.log(`Labels`, labels);
-    labels.forEach(label => {
-        console.log(`Labels`, label);
-    });
+async function run() {
+    try {
+        const labels = JSON.parse(core.getInput('labels'));
+        labels.forEach(label => {
+            console.log('Label data', label);
+        });
 
-    const octokit = github.getOctokit(core.getInput('github-token'));
-    const existingLabels = getRepoLabels(octokit, github);
-    console.log(existingLabels);
+        const octokit = github.getOctokit(core.getInput('github-token'));
+        const existingLabels = getRepoLabels(octokit, github);
+        console.log(existingLabels);
 
-    // Get the JSON webhook payload for the event that triggered the workflow
-    const payload = JSON.stringify(github.context.payload, undefined, 2)
-    console.log(`The event payload: ${payload}`);
-} catch (error) {
-    core.setFailed(error.message);
+        // Get the JSON webhook payload for the event that triggered the workflow
+        const payload = JSON.stringify(github.context.payload, undefined, 2)
+        //console.log(`The event payload: ${payload}`);
+    } catch (error) {
+        core.setFailed(error.message);
+    }
 }
 
 async function getRepoLabels(octokit, github) {
+    console.log(github.context.repo);
+
     return await octokit.paginate(octokit.issues.listLabelsForRepo, {
         ...github.context.repo
     }).map(label => {
@@ -31,3 +33,5 @@ async function getRepoLabels(octokit, github) {
         };
     });
 }
+
+run();
