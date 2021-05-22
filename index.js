@@ -21,7 +21,17 @@ async function run() {
 }
 
 async function getRepoLabels(octokit, github) {
-    return await octokit.rest.issues.listLabelsForRepo(github.context.repo);
+    let response = await octokit.rest.issues.listLabelsForRepo(github.context.repo);
+    let labels = [];
+    response.data.forEach(label => {
+        labels.push({
+            name: label.name,
+            color: label.color,
+            description: label.description
+        });
+    });
+
+    return labels;
 }
 
 run();
