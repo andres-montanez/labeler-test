@@ -9,6 +9,7 @@ async function run() {
         });
 
         const octokit = github.getOctokit(core.getInput('github-token'));
+        console.log(octokit, core.getInput('github-token'));
         const existingLabels = getRepoLabels(octokit, github);
         console.log(existingLabels);
 
