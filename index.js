@@ -27,7 +27,7 @@ async function run() {
         });
 
         // Remove not defined labels
-        existingLabels.forEach(label => {
+        Object.keys(existingLabels).forEach(label => {
             console.log(`Deleting label ${label.name}`);
             let response = deleteLabel(octokit, github, label);
         });

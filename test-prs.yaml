@@ -1,0 +1,19 @@
+name: github
+
+on: pull_request
+
+jobs:
+  labeler:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: 'Apply labels'
+        uses: andres-montanez/labeler-test@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          labels: |
+            [
+              { "base": "preprod", "labels": ["preprod", "description"] },
+              { "name": "feature", "color": "0E8A16", "description": "A feature addition" },
+              { "name": "documentation", "color": "0075ca", "description": "Improve documentation" }
+            ]
