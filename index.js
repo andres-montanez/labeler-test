@@ -6,6 +6,7 @@ async function run() {
         // Get current exiting labels from the repository
         const octokit = github.getOctokit(core.getInput('github-token'));
         let existingLabels = await getRepoLabels(octokit, github);
+        let labelsToPersist = [];
         console.log(existingLabels);
 
         // Labels to be set on the repository
@@ -17,19 +18,22 @@ async function run() {
                     existingLabels[label.name].description !== label.description
                 ) {
                     console.log(`Updating label ${label.name}`);
-                    delete existingLabels[label.name];
+                    labelsToPersist.push(label.name);
                     let response = updateLabel(octokit, github, label);
                 }
             } else {
                 console.log(`Creating label ${label.name}`);
+                labelsToPersist.push(label.name);
                 let response = createLabel(octokit, github, label);
             }
         });
 
-        // Remove not defined labels
+        // Remove not configured labels
         Object.keys(existingLabels).forEach(label => {
-            console.log(`Deleting label ${label}`);
-            let response = deleteLabel(octokit, github, label);
+            if (labelsToPersist.indexOf(label) === -1) {
+                console.log(`Deleting label ${label}`);
+                let response = deleteLabel(octokit, github, label);
+            }
         });
 
         // Get the JSON webhook payload for the event that triggered the workflow
