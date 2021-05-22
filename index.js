@@ -28,7 +28,7 @@ async function run() {
 
         // Remove not defined labels
         Object.keys(existingLabels).forEach(label => {
-            console.log(`Deleting label ${label.name}`);
+            console.log(`Deleting label ${label}`);
             let response = deleteLabel(octokit, github, label);
         });
 
@@ -82,7 +82,7 @@ async function deleteLabel(octokit, github, label) {
     let payload = {
         owner: github.context.repo.owner,
         repo: github.context.repo.repo,
-        name: label.name
+        name: label
     };
 
     return await octokit.rest.issues.deleteLabel(payload);
