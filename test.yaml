@@ -1,0 +1,23 @@
+name: github
+
+on: push
+
+jobs:
+  labeler:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: 'Apply labels'
+        uses: andres-montanez/labeler-test@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          labels:
+            - name: 'bugfix'
+              color: 'cc0000'
+              description: 'A bug is fixed'
+            - name: 'feature'
+              color: '00cc00'
+              description: 'A feature'
+            - name: 'doc'
+              color: '0000cc'
+              description: 'A documentation improvement'

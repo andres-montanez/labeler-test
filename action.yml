@@ -1,0 +1,12 @@
+name: 'Labeler'
+description: 'Makes sure the repo has a predefined set of labels'
+inputs:
+  github-token:  # id of input
+    description: 'Token for interacting with the repo'
+    required: true
+  labels:
+    description: 'List of labels'
+    required: true
+runs:
+  using: 'node12'
+  main: 'index.js'
