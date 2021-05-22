@@ -5,7 +5,7 @@ async function run() {
     try {
         const labels = JSON.parse(core.getInput('labels'));
         labels.forEach(label => {
-            console.log('Label data', label);
+            console.info('Label data', label);
         });
 
         const octokit = github.getOctokit(core.getInput('github-token'));
@@ -21,15 +21,7 @@ async function run() {
 }
 
 async function getRepoLabels(octokit, github) {
-    return await octokit.paginate(octokit.rest.issues.listLabelsForRepo, {
-        ...github.context.repo
-    }).map(label => {
-        return {
-            name: label.name,
-            color: label.color,
-            description: label.description || ''
-        };
-    });
+    return await octokit.rest.issues.listLabelsForRepo(github.context.repo);
 }
 
 run();
