@@ -9,7 +9,7 @@ async function run() {
         });
 
         const octokit = github.getOctokit(core.getInput('github-token'));
-        const existingLabels = getRepoLabels(octokit, github);
+        const existingLabels = await getRepoLabels(octokit, github);
         console.log(existingLabels);
 
         // Get the JSON webhook payload for the event that triggered the workflow
