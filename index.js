@@ -3,7 +3,7 @@ const github = require('@actions/github');
 
 try {
     // `who-to-greet` input defined in action metadata file
-    const labels = core.getInput('labels');
+    const labels = JSON.parse(core.getInput('labels'));
     console.log(`Labels`, labels);
 
     // Get the JSON webhook payload for the event that triggered the workflow
